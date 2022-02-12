@@ -1,3 +1,5 @@
+package main;
+
 import main.booking.Booking;
 import main.booking.BookingController;
 
