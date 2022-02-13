@@ -1,4 +1,4 @@
-package flights;
+package main.flights;
 
 import java.util.ArrayList;
 import java.util.List;

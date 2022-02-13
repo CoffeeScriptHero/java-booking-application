@@ -1,7 +1,6 @@
-import flights.*;
+package main;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import main.flights.*;
 
 public class Main {
 
