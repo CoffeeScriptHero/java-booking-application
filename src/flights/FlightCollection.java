@@ -2,6 +2,7 @@ package flights;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class FlightCollection implements FlightDAO {
 
@@ -22,8 +23,13 @@ public class FlightCollection implements FlightDAO {
   }
 
   @Override
-  public Flight getFlightById(int id) {
-    return flights.get(id);
+  public Optional<Flight> getFlightById(int id) {
+    Optional<Flight> optionalFlight = flights.stream().filter(flight -> flight.getId() == id).findAny();
+    if(optionalFlight.isEmpty()) {
+      System.out.println("We couldn't find a flight for this ID");
+    }
+    return optionalFlight;
+
   }
 
   @Override

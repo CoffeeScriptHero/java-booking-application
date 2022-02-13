@@ -1,6 +1,7 @@
 package flights;
 
 import java.util.List;
+import java.util.Optional;
 
 public class FlightController {
   private final FlightService flightService;
@@ -13,7 +14,7 @@ public class FlightController {
     return flightService.getAllFlights();
   }
 
-  public Flight getFlightById(int id) {
+  public Optional<Flight> getFlightById(int id) {
     return flightService.getFlightById(id);
   }
 

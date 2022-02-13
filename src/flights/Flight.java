@@ -20,11 +20,12 @@ public class Flight {
   this.availableSeats = availableSeats;
  }
 
- public String prettyFormat () {
+ public void prettyFormat () {
   String title = "------------------------Flight------------------------";
   String end = "-------------------------------------------------------";
-  return String.format("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tTime: %s\nAvailable seats: %d \tFlight id: %d\n%s",
-    title, destination.getName(), date, time, availableSeats, id , end  );
+  System.out.printf("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tTime: %s\nAvailable seats: %d \tFlight id: %d\n%s",
+    title, destination.getName(), date, time, availableSeats, id , end);
+
  }
  @Override
  public String toString() {

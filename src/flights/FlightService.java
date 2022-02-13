@@ -3,6 +3,7 @@ package flights;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class FlightService {
@@ -16,7 +17,7 @@ public class FlightService {
     return flightDAO.getAllFlights();
   }
 
-  public Flight getFlightById(int id) {
+  public Optional<Flight> getFlightById(int id) {
     return flightDAO.getFlightById(id);
   }
 
@@ -33,11 +34,8 @@ public class FlightService {
     if (!flightsExist()) {
       System.out.println("No flights to display");
     } else {
-      IntStream.range(0, flights.size()).forEach(i ->
-          System.out.println( flights.get(i).prettyFormat()));
-
+      IntStream.range(0, flights.size()).forEach(i -> flights.get(i).prettyFormat());
     }
-
   }
 public void displayAllFlights () {
     if(flightsExist()) {
