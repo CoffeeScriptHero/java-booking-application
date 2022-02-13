@@ -1,4 +1,4 @@
-package flights;
+package main.flights;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

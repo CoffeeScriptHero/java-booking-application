@@ -1,4 +1,4 @@
-package flights;
+package main.flights;
 
 public enum Destination {
   SOUTH_ISLAND("South Island"),
