@@ -3,12 +3,13 @@ package main.booking;
 import main.flights.Flight;
 import main.passenger.Passenger;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class Booking {
+public class Booking implements Serializable {
     private List<Passenger> passengers;
     private int id;
     private int flightId;
@@ -56,12 +57,12 @@ public class Booking {
     }
 
     public void addPassenger(Passenger passenger) {
-        if (!this.passengers.contains(passenger)) this.passengers.add(passenger);
+        if (!this.passengers.contains(passenger) && this.passengers.size() < 30) this.passengers.add(passenger);
     }
 
     public void addPassenger(String name, String surname) {
         Passenger passenger = new Passenger(name, surname);
-        if (!this.passengers.contains(passenger)) this.passengers.add(passenger);
+        if (!this.passengers.contains(passenger) && this.passengers.size() < 30) this.passengers.add(passenger);
     }
 
     public int countOccupiedPlaces() {
@@ -71,9 +72,11 @@ public class Booking {
     public String prettyFormat(Flight flight) {
         String title = "------------------------Booking------------------------";
         String end = "-------------------------------------------------------";
-        return String.format("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tOccupied seats: %d \tFlight id: %d\n%s",
-                title, flight.getDestination(), flight.getDate(), this.countOccupiedPlaces(), this.flightId, end);
+        return String.format("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tTime: %s\nOccupied seats: %d \tFlight id: %d\n%s\n",
+                title, flight.getDestination(), flight.getDate(), flight.getTime(),
+                this.countOccupiedPlaces(), this.flightId, end);
     }
+
 
     public void printId() {
         System.out.printf("Id of your booking is: %d", this.id);

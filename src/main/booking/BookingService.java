@@ -12,28 +12,27 @@ public class BookingService {
 
     public ArrayList<Booking> getAllBookings() { return bookingDao.getAllBookings(); }
 
-    public void displayAllBookings(FlightController fc) {
+    public void printPrettyFormat(Booking booking, FlightController flightController) {
+        Optional<Flight> flight = flightController.getFlightById(booking.getFlightId());
+        flight.ifPresent(f -> System.out.printf("%s\n", booking.prettyFormat(f)));
+    }
+
+    public void displayAllBookings(FlightController flightController) {
         if (getAllBookings().size() == 0) {
             System.out.println("Booking list is empty\n");
         } else {
-            getAllBookings().forEach((b) -> {
-                Optional<Flight> flight = fc.getFlightById(b.getFlightId());
-                flight.ifPresent(f -> System.out.printf("%s\n", b.prettyFormat(f)));
-            });
+            getAllBookings().forEach((b) -> printPrettyFormat(b, flightController));
             System.out.println();
         }
     }
 
-    public void showUserBookings(String name, String surname, FlightController fc) {
+    public void showUserBookings(String name, String surname, FlightController flightController) {
         List<Booking> userBookings = getAllBookings().stream().filter(b -> b.ifUserExist(name, surname)).toList();
         if (userBookings.size() == 0) {
-            System.out.println("\nNo bookings found for this user");
+            System.out.println("No bookings found for this user");
         } else {
-            System.out.println("\nThis user's bookings: ");
-            userBookings.forEach((b) -> {
-                Optional<Flight> flight = fc.getFlightById(b.getFlightId());
-                flight.ifPresent(f -> System.out.printf("%s\n", b.prettyFormat(f)));
-            });
+            System.out.println("This user's bookings: ");
+            userBookings.forEach((b) -> printPrettyFormat(b, flightController));
         }
     }
 
@@ -42,5 +41,11 @@ public class BookingService {
     public boolean deleteBooking(int id) { return bookingDao.deleteBooking(id); }
 
     public void saveBooking(Booking booking) { bookingDao.saveBooking(booking); }
+
+    public void saveBookingData(ArrayList<Booking> bookings, String fileName) {
+        bookingDao.saveBookingData(bookings, fileName);
+    }
+
+    public ArrayList<Booking> loadBookingData(String fileName) { return bookingDao.loadBookingData(fileName);}
 
 }

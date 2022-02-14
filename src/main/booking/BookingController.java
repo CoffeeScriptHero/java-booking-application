@@ -10,10 +10,16 @@ public class BookingController {
 
     public ArrayList<Booking> getAllBookings() { return bookingService.getAllBookings(); }
 
-    public void displayAllBookings(FlightController fc) {bookingService.displayAllBookings(fc);}
+    public void printPrettyFormat(Booking booking, FlightController flightController) {
+        bookingService.printPrettyFormat(booking, flightController);
+    }
 
-    public void showUserBookings(String name, String surname, FlightController fc) {
-        bookingService.showUserBookings(name, surname, fc);
+    public void displayAllBookings(FlightController flightController) {
+        bookingService.displayAllBookings(flightController);
+    }
+
+    public void showUserBookings(String name, String surname, FlightController flightController) {
+        bookingService.showUserBookings(name, surname, flightController);
     }
 
     public Optional<Booking> getBooking(int id) { return bookingService.getBooking(id); }
@@ -21,4 +27,10 @@ public class BookingController {
     public boolean deleteBooking(int id) { return bookingService.deleteBooking(id); }
 
     public void saveBooking(Booking booking) { bookingService.saveBooking(booking); }
+
+    public void saveBookingData(ArrayList<Booking> bookings, String fileName) {
+        bookingService.saveBookingData(bookings, fileName);
+    }
+
+    public ArrayList<Booking> loadBookingData(String fileName) {return bookingService.loadBookingData(fileName);}
 }
