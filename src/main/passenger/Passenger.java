@@ -24,4 +24,12 @@ public class Passenger {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    @Override
+    public String toString() {
+        return "Passenger{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                '}';
+    }
 }
