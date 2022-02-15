@@ -24,6 +24,10 @@ public class CollectionBookingDao implements BookingDAO<Booking>{
 
     private final ArrayList<Booking> bookings = new ArrayList<>();
 
+    public void clearCollection() {
+        bookings.clear();
+    }
+
     @Override
     public ArrayList<Booking> getAllBookings() {
         return bookings;

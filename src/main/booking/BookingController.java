@@ -1,12 +1,15 @@
 package main.booking;
 
 import main.flights.FlightController;
+import main.passenger.Passenger;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class BookingController {
     BookingService bookingService = new BookingService();
+
+    public void clearCollection() {bookingService.clearCollection();}
 
     public ArrayList<Booking> getAllBookings() { return bookingService.getAllBookings(); }
 
@@ -20,6 +23,14 @@ public class BookingController {
 
     public void showUserBookings(String name, String surname, FlightController flightController) {
         bookingService.showUserBookings(name, surname, flightController);
+    }
+
+    public void createBooking(int id, int flightId, ArrayList<Passenger> passengers) {
+        bookingService.createBooking(id, flightId, passengers);
+    }
+
+    public void createBooking(int id, int flightId) {
+        bookingService.createBooking(id, flightId);
     }
 
     public Optional<Booking> getBooking(int id) { return bookingService.getBooking(id); }
