@@ -19,10 +19,12 @@ public class FlightController {
 
 public boolean doesFlightExist (int id ) { return flightService.doesFlightExist(id);};
 
-  public Optional<Flight> getFlightById(int id) {
-    return flightService.getFlightById(id);
+  public Optional<Flight> getFlight(int id) {
+    return flightService.getFlight(id);
   }
-
+  public Optional<Flight> getFlight(Flight flight) {
+    return flightService.getFlight(flight);
+  }
   public void deleteFlight(int id) {flightService.deleteFlight(id);}
 
   public void saveFlight(Flight flight) {flightService.saveFlight(flight);}
@@ -55,5 +57,13 @@ public boolean doesFlightExist (int id ) { return flightService.doesFlightExist(
   }
   public void addAvailableSeats (int id, int seats) {
     flightService.addAvailableSeats(id, seats);
+  }
+  public void saveFlightData(List<Flight> flights, String fileName) {
+    flightService.saveFlightData(flights,fileName);
+  }
+
+
+  public List<Flight> loadFlightData(String fileName) {
+    return flightService.loadFlightData(fileName);
   }
 }
