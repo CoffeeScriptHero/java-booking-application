@@ -16,7 +16,6 @@ public class FlightCollection implements FlightDAO {
     return flightCollection;
   }
 
-
   @Override
   public List<Flight> getAllFlights() {
     return flights;
@@ -24,12 +23,7 @@ public class FlightCollection implements FlightDAO {
 
   @Override
   public Optional<Flight> getFlightById(int id) {
-    Optional<Flight> optionalFlight = flights.stream().filter(flight -> flight.getId() == id).findAny();
-    if(optionalFlight.isEmpty()) {
-      System.out.println("We couldn't find a flight for this ID");
-    }
-    return optionalFlight;
-
+    return flights.stream().filter(flight -> flight.getId() == id).findAny();
   }
 
   @Override

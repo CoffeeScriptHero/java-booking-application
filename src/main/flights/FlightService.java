@@ -2,8 +2,10 @@ package main.flights;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class FlightService {
@@ -21,14 +23,47 @@ public class FlightService {
     return flightDAO.getFlightById(id);
   }
 
+  public boolean doesFlightExist (int id) {
+    return flightDAO.getAllFlights().stream().anyMatch(flight -> flight.getId() == id);
+  }
+
   public void deleteFlight(int id) {flightDAO.deleteFlight(id);}
 
 
   public void saveFlight(Flight flight) {flightDAO.saveFlight(flight);}
+
   public boolean flightsExist() {
     return (flightDAO.getAllFlights().size() > 0);
   }
 
+  public  boolean availableSeatsExist (int id, int size) {
+    if(doesFlightExist(id)) {
+      return getFlightById(id).get().getAvailableSeats() - size >= 0;
+    } else  return false;
+    }
+
+
+public boolean availableSeatsInFlight (Flight flight , int size) {
+  return flight.getAvailableSeats() - size >= 0;
+}
+
+    public boolean isDestinationAvailable (String destination) {
+     return Arrays.stream(Destination.values()).anyMatch(existingDestination -> existingDestination.getName().equals(destination));
+    }
+
+    public void deleteAvailableSeats (int id, int seats) {
+      flightDAO.getFlightById(id).get().deleteSeats(seats);
+    }
+    public void addAvailableSeats (int id, int seats) {
+      flightDAO.getFlightById(id).get().addSeats(seats);
+    }
+
+  public List<Flight> findAvailableFlights (String destination, LocalDate date, int seats) {
+ return getAllFlights().stream()
+   .filter(flight ->
+     flight.getDestination().getName().equals(destination) && flight.getDate().isEqual(date) && availableSeatsInFlight(flight, seats))
+   .collect(Collectors.toList());
+}
 
   public void displayFlights(List<Flight> flights) {
     if (!flightsExist()) {
@@ -74,10 +109,5 @@ public void generateTestData () {
   saveFlight(flight13);
   saveFlight(flight14);
   saveFlight(flight15);
-
-
-
-
-
 }
 }

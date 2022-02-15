@@ -12,4 +12,6 @@ public interface FlightDAO {
   void deleteFlight(int id);
 
   void saveFlight(Flight Flight);
+
+
 }

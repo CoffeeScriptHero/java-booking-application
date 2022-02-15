@@ -19,7 +19,13 @@ public class Flight {
   this.id = id;
   this.availableSeats = availableSeats;
  }
+public  void addSeats (int seats) {
+  availableSeats+= seats;
+}
 
+public void deleteSeats (int seats) {
+ availableSeats-= seats;
+}
  public void prettyFormat () {
   String title = "------------------------Flight------------------------";
   String end = "-------------------------------------------------------";
