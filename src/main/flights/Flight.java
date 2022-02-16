@@ -1,11 +1,12 @@
 package main.flights;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class Flight {
+public class Flight implements Serializable {
  private LocalDate date;
  private LocalTime time;
  private Destination destination;
@@ -19,7 +20,13 @@ public class Flight {
   this.id = id;
   this.availableSeats = availableSeats;
  }
+public  void addSeats (int seats) {
+  availableSeats+= seats;
+}
 
+public void deleteSeats (int seats) {
+ availableSeats-= seats;
+}
  public void prettyFormat () {
   String title = "------------------------Flight------------------------";
   String end = "-------------------------------------------------------";
