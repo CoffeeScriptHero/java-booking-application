@@ -72,9 +72,10 @@ public class Booking implements Serializable {
     public String prettyFormat(Flight flight) {
         String title = "------------------------Booking------------------------";
         String end = "-------------------------------------------------------";
-        return String.format("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tTime: %s\nOccupied seats: %d \tFlight id: %d\n%s\n",
+        return String.format("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tTime: %s\nOccupied seats: %d \tFlight id: %d \t" +
+                        "Booking id: %d\n%s\n",
                 title, flight.getDestination(), flight.getDate(), flight.getTime(),
-                this.countOccupiedPlaces(), this.flightId, end);
+                this.countOccupiedPlaces(), this.flightId, this.id, end);
     }
 
 
