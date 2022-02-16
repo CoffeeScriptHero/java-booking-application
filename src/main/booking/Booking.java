@@ -3,11 +3,13 @@ package main.booking;
 import main.flights.Flight;
 import main.passenger.Passenger;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-public class Booking {
+public class Booking implements Serializable {
     private List<Passenger> passengers;
     private int id;
     private int flightId;
@@ -15,6 +17,7 @@ public class Booking {
     public Booking(int id, int flightId) {
         this.id = id;
         this.flightId = flightId;
+        this.passengers = new ArrayList<Passenger>();
     }
 
     public Booking(int id, int flightId, ArrayList<Passenger> passengers) {
@@ -39,17 +42,44 @@ public class Booking {
         this.flightId = raceId;
     }
 
-    public int countFreePlaces() {
-        return 30 - this.passengers.size();
+    public List<Passenger> getPassengers() {
+        return passengers;
     }
 
-    public void addPassenger(Passenger passenger) { this.passengers.add(passenger); }
+    public void setPassengers(List<Passenger> passengers) {
+        this.passengers = passengers;
+    }
+
+    public boolean ifUserExist(String name, String surname) {
+        Optional<Passenger> passenger = this.passengers.stream().
+                filter(p -> Objects.equals(p.getName(), name) && Objects.equals(p.getSurname(), surname)).findAny();
+        return passenger.isPresent();
+    }
+
+    public void addPassenger(Passenger passenger) {
+        if (!this.passengers.contains(passenger) && this.passengers.size() < 30) this.passengers.add(passenger);
+    }
+
+    public void addPassenger(String name, String surname) {
+        Passenger passenger = new Passenger(name, surname);
+        if (!this.passengers.contains(passenger) && this.passengers.size() < 30) this.passengers.add(passenger);
+    }
+
+    public int countOccupiedPlaces() {
+        return this.passengers.size();
+    }
 
     public String prettyFormat(Flight flight) {
         String title = "------------------------Booking------------------------";
         String end = "-------------------------------------------------------";
-        return String.format("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tFree places: %d \tFlight id: %d\n%s",
-                title, flight.getDestination(), flight.getDate(), this.countFreePlaces(), flightId, end);
+        return String.format("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tTime: %s\nOccupied seats: %d \tFlight id: %d\n%s\n",
+                title, flight.getDestination(), flight.getDate(), flight.getTime(),
+                this.countOccupiedPlaces(), this.flightId, end);
+    }
+
+
+    public void printId() {
+        System.out.printf("Id of your booking is: %d", this.id);
     }
 
     @Override
