@@ -98,7 +98,7 @@ public class Main {
     } catch (NonExistentMenuName exMessage) {
       System.err.println(exMessage);
       chooseMenuTab(scanner.nextLine());
-    } catch (NumberFormatException | DateTimeParseException exMessage) {
+    } catch (NumberFormatException | DateTimeParseException | NoSuchElementException exMessage) {
       System.err.println(ERROR);
       chooseMenuTab(line);
     } catch (IndexOutOfBoundsException exMessage) {
