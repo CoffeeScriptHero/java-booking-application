@@ -1,5 +1,6 @@
 package main;
 
+import main.booking.BookingController;
 import main.errors.NonExistentMenuName;
 import main.flights.*;
 
@@ -17,6 +18,7 @@ public class Main {
   private static final FlightDAO flightDAO = FlightCollection.instanceOf();
   private static final FlightService flightService = new FlightService(flightDAO);
   private static final FlightController flightController = new FlightController(flightService);
+  private static final BookingController bookingController = new BookingController();
 
 
   private static final ArrayList<String> menuTabs = new ArrayList<>();
@@ -24,6 +26,9 @@ public class Main {
   private static Boolean isRunning = true;
 
   public static void main(String[] args) {
+    FlightDAO flightDAO = FlightCollection.instanceOf();
+    FlightService flightService = new FlightService(flightDAO);
+    FlightController flightController = new FlightController(flightService);
     flightController.generateTestData();
     putMenuTabs();
     while (isRunning) {
@@ -68,10 +73,16 @@ public class Main {
 
         }
         case CANCEL_RESERVATION -> {
-
+          System.out.println("Enter the booking id to delete it!");
+          int id = Integer.parseInt(scanner.nextLine());
+          bookingController.deleteBooking(id);
         }
         case MY_FLIGHTS -> {
-
+          System.out.println("Enter the name of the person for whom the ticket is booked!");
+          String name = scanner.nextLine();
+          System.out.println("Enter the last name!");
+          String lastname = scanner.nextLine();
+          bookingController.showUserBookings(name, lastname, flightController);
         }
         case EXIT -> {
           isRunning = false;
