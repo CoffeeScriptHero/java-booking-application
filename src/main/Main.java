@@ -1,5 +1,6 @@
 package main;
 
+import main.booking.Booking;
 import main.booking.BookingController;
 import main.errors.NonExistentMenuName;
 import main.flights.*;
@@ -11,6 +12,7 @@ import java.util.*;
 
 public class Main {
 
+  private static final String FILE_NAME_BOOKING = "bookings_db.txt";
   private static final String ONLINE_BOARD = "Онлайн-табло";
   private static final String SHOW_INFORMATION = "Посмотреть информацию о рейсе";
   private static final String SEARCH_BOOKING = "Поиск и бронировка рейса";
@@ -30,10 +32,8 @@ public class Main {
   private static Boolean isRunning = true;
 
   public static void main(String[] args) {
-    FlightDAO flightDAO = FlightCollection.instanceOf();
-    FlightService flightService = new FlightService(flightDAO);
-    FlightController flightController = new FlightController(flightService);
     flightController.generateTestData();
+    loadBookings();
     putMenuTabs();
     while (isRunning) {
       showMenu();
@@ -65,13 +65,14 @@ public class Main {
               .stream()
               .filter(value -> finalLine.equals(value.toLowerCase()))
               .findAny().orElse("");
+
       switch(searchMenuTab) {
         case ONLINE_BOARD -> showOnlineBoard();
         case SHOW_INFORMATION -> showInformation();
         case SEARCH_BOOKING -> showSearchBooking();
         case CANCEL_RESERVATION -> showCancelReservation();
         case MY_FLIGHTS ->  showMyFlights();
-        case EXIT -> isRunning = false;
+        case EXIT -> exit();
         default -> throw new NonExistentMenuName("There is no such menu item! Try again!");
       }
     } catch (NonExistentMenuName exMessage) {
@@ -85,6 +86,12 @@ public class Main {
       setNumberFlightTab();
     }
   }
+
+  private static void loadBookings() {
+      for (Booking b : bookingController.loadBookingData(FILE_NAME_BOOKING)) {
+        bookingController.saveBooking(b);
+      }
+    }
 
   private static void showInformation() {
     System.out.println("Please write flight id!");
@@ -105,10 +112,12 @@ public class Main {
     System.out.println("Enter flight date! Format dd-mm-yyyy !");
     String dateText = scanner.nextLine();
     LocalDate date = LocalDate.parse(dateText);
+
     System.out.println("Enter number of passengers!");
     countPassengers = Integer.parseInt(scanner.nextLine());
     availableFlights = flightController.findAvailableFlights(destination, date, countPassengers);
     flightController.displayFlights(availableFlights);
+
     if(availableFlights.size() != 0) {
       setNumberFlightTab();
     } else {
@@ -119,6 +128,7 @@ public class Main {
   private static void setNumberFlightTab() {
     System.out.println("Enter number of flight!");
     int number = Integer.parseInt(scanner.nextLine());
+
     if(number != 0) {
       showReservePlace(number, availableFlights, countPassengers);
     }
@@ -127,6 +137,7 @@ public class Main {
   private static void showReservePlace(int number, List<Flight> flightList, int countPassenger) {
     int bookingId = new Random(System.currentTimeMillis()).nextInt();
     int flightId = flightList.get(number - 1).getId();
+
     ArrayList<Passenger> passengerList = new ArrayList<>();
     for(int i = 0; i < countPassenger; i++) {
       System.out.println("Enter the name!");
@@ -135,6 +146,7 @@ public class Main {
       String lastname = scanner.nextLine();
       passengerList.add(bookingController.createPassenger(name, lastname));
     }
+
     bookingController.createBooking(bookingId, flightId, passengerList);
   }
 
@@ -150,5 +162,10 @@ public class Main {
     System.out.println("Enter the last name!");
     String lastname = scanner.nextLine();
     bookingController.showUserBookings(name, lastname, flightController);
+  }
+
+  private static void exit() {
+    isRunning = false;
+    bookingController.saveBookingData(bookingController.getAllBookings(), FILE_NAME_BOOKING);
   }
 }
