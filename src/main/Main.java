@@ -4,8 +4,12 @@ import main.booking.Booking;
 import main.booking.BookingController;
 import main.errors.NonExistentMenuName;
 import main.flights.*;
+import main.java.util.Ex;
 import main.passenger.Passenger;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -13,6 +17,7 @@ import java.util.*;
 public class Main {
 
   private static final String FILE_NAME_BOOKING = "bookings_db.txt";
+  private static final String FILE_NAME_FLIGHTS = "flights_db.txt";
   private static final String ONLINE_BOARD = "Онлайн-табло";
   private static final String SHOW_INFORMATION = "Посмотреть информацию о рейсе";
   private static final String SEARCH_BOOKING = "Поиск и бронировка рейса";
@@ -31,13 +36,28 @@ public class Main {
   private static final Scanner scanner = new Scanner(System.in);
   private static Boolean isRunning = true;
 
+  private static int countPassengers;
+  private static List<Flight> availableFlights;
+
   public static void main(String[] args) {
-    flightController.generateTestData();
+//    flightController.generateTestData();
+    loadFlights();
     loadBookings();
     putMenuTabs();
     while (isRunning) {
       showMenu();
       chooseMenuTab(scanner.nextLine());
+    }
+  }
+
+  private static void loadBookings() {
+    for (Booking booking : bookingController.loadBookingData(FILE_NAME_BOOKING)) {
+      bookingController.saveBooking(booking);
+    }
+  }
+  private static void loadFlights() {
+    for (Flight flight : flightController.loadFlightData(FILE_NAME_FLIGHTS)) {
+      flightController.saveFlight(flight);
     }
   }
 
@@ -87,12 +107,6 @@ public class Main {
     }
   }
 
-  private static void loadBookings() {
-      for (Booking b : bookingController.loadBookingData(FILE_NAME_BOOKING)) {
-        bookingController.saveBooking(b);
-      }
-    }
-
   private static void showInformation() {
     System.out.println("Please write flight id!");
     int id = Integer.parseInt(scanner.nextLine());
@@ -102,9 +116,6 @@ public class Main {
   private static void showOnlineBoard() {
     flightController.displayAllFlights();
   }
-
-  private static int countPassengers;
-  private static List<Flight> availableFlights;
 
   private static void showSearchBooking() {
     System.out.println("Enter destination!");
@@ -148,11 +159,14 @@ public class Main {
     }
 
     bookingController.createBooking(bookingId, flightId, passengerList);
+    flightController.deleteAvailableSeats(flightId, countPassenger);
   }
 
   private static void showCancelReservation() {
     System.out.println("Enter the booking id to delete it!");
     int id = Integer.parseInt(scanner.nextLine());
+    Booking booking = bookingController.getBooking(id).get();
+    flightController.addAvailableSeats(booking.getFlightId(), booking.countOccupiedPlaces());
     bookingController.deleteBooking(id);
   }
 
@@ -167,5 +181,6 @@ public class Main {
   private static void exit() {
     isRunning = false;
     bookingController.saveBookingData(bookingController.getAllBookings(), FILE_NAME_BOOKING);
+    flightController.saveFlightData(flightController.getAllFlights(), FILE_NAME_FLIGHTS);
   }
 }
