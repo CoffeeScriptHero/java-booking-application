@@ -33,6 +33,10 @@ public class BookingController {
         bookingService.createBooking(id, flightId);
     }
 
+    public Passenger createPassenger(String name, String lastname) {
+        return bookingService.createPassenger(name, lastname);
+    }
+
     public Optional<Booking> getBooking(int id) { return bookingService.getBooking(id); }
 
     public boolean deleteBooking(int id) { return bookingService.deleteBooking(id); }

@@ -17,7 +17,7 @@ public class FlightController {
     return flightService.getAllFlights();
   }
 
-public boolean doesFlightExist (int id ) { return flightService.doesFlightExist(id);};
+  public boolean doesFlightExist (int id ) { return flightService.doesFlightExist(id);};
 
   public Optional<Flight> getFlight(int id) {
     return flightService.getFlight(id);
