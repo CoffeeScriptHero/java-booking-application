@@ -23,7 +23,7 @@ public class Flight {
  public void prettyFormat () {
   String title = "------------------------Flight------------------------";
   String end = "-------------------------------------------------------";
-  System.out.printf("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tTime: %s\nAvailable seats: %d \tFlight id: %d\n%s",
+  System.out.printf("%s\nFrom: Kyiv\nTo: %s\nDate: %s\tTime: %s\nAvailable seats: %d \tFlight id: %d\n%s\n",
     title, destination.getName(), date, time, availableSeats, id , end);
 
  }
