@@ -5,6 +5,8 @@ import main.booking.BookingController;
 import main.flights.*;
 
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.List;
 
 public class Main {
   public static void main(String[] args) {
@@ -39,5 +41,8 @@ public class Main {
 //      else System.out.println("В базе данных пусто");
 //    } такой метод можно использовать в классе меню
 
+    flightController.getFlight(54).ifPresent(Flight::prettyFormat);
+    List<Flight> list = flightController.findAvailableFlights("Las Vegas", LocalDate.of(2022, 3, 5), 10);
+    System.out.println(list);
   }
 }
