@@ -6,6 +6,7 @@ import main.booking.CollectionBookingDao;
 import main.flights.Flight;
 import main.flights.FlightController;
 import main.flights.FlightService;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,4 +31,10 @@ class BookingServiceTest {
     void tearDown() {
     }
 
+    @Test
+    public void CreateBookingAddCreatedBookingToBookingsList() {
+        assertEquals(bookingService.getAllBookings(), new ArrayList<Booking>());
+        bookingService.createBooking(1, 5);
+        assertEquals(bookingService.getAllBookings(), new ArrayList<Booking>(){{add(new Booking(1, 5));}});
+    }
 }
