@@ -23,6 +23,8 @@ public class Main {
 //    bc.saveBooking(book1);
 //    bc.saveBooking(book2);
 
+    bc.printPrettyFormat(book1, flightController);
+
     bc.saveBookingData(new ArrayList<Booking>(){{
       add(book1);
       add(book2);

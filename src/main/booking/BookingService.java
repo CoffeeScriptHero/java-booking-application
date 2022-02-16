@@ -18,7 +18,7 @@ public class BookingService {
     public ArrayList<Booking> getAllBookings() { return bookingDao.getAllBookings(); }
 
     public void printPrettyFormat(Booking booking, FlightController flightController) {
-        Optional<Flight> flight = flightController.getFlightById(booking.getFlightId());
+        Optional<Flight> flight = flightController.getFlight(booking.getFlightId());
         flight.ifPresent(f -> System.out.printf("%s\n", booking.prettyFormat(f)));
     }
 
