@@ -1,10 +1,11 @@
 package main.booking;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public interface BookingDAO<T> {
     ArrayList<T> getAllBookings();
-    T getBooking(int id);
+    Optional<T> getBooking(int id);
     boolean deleteBooking(int id);
     void saveBooking(T booking);
     void saveBookingData(ArrayList<T> bookings, String fileName);
