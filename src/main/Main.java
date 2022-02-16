@@ -18,12 +18,12 @@ public class Main {
 
   private static final String FILE_NAME_BOOKING = "bookings_db.txt";
   private static final String FILE_NAME_FLIGHTS = "flights_db.txt";
-  private static final String ONLINE_BOARD = "Онлайн-табло";
-  private static final String SHOW_INFORMATION = "Посмотреть информацию о рейсе";
-  private static final String SEARCH_BOOKING = "Поиск и бронировка рейса";
-  private static final String CANCEL_RESERVATION = "Отменить бронирование";
-  private static final String MY_FLIGHTS = "Мои рейсы";
-  private static final String EXIT = "Выход";
+  private static final String ONLINE_BOARD = "Online scoreboard";
+  private static final String SHOW_INFORMATION = "View flight information";
+  private static final String SEARCH_BOOKING = "Flight search and booking";
+  private static final String CANCEL_RESERVATION = "Cancel booking";
+  private static final String MY_FLIGHTS = "My flights";
+  private static final String EXIT = "Exit";
   private static final String ERROR = "The data you entered is incorrect! Try again!";
 
   private static final FlightDAO flightDAO = FlightCollection.instanceOf();
@@ -71,11 +71,11 @@ public class Main {
   }
 
   public static void showMenu() {
-    System.out.println("\n------------Главное меню------------");
+    System.out.println("\n------------Main Menu------------");
     for(String tab: menuTabs) {
       System.out.printf("| %s |\n", tab);
     }
-    System.out.println("------------------------------------");
+    System.out.println("---------------------------------");
   }
 
   public static void chooseMenuTab(String line) {
@@ -155,7 +155,7 @@ public class Main {
       String name = scanner.nextLine();
       System.out.println("Enter the last name!");
       String lastname = scanner.nextLine();
-      passengerList.add(bookingController.createPassenger(name, lastname));
+      passengerList.add(new Passenger(name, lastname));
     }
 
     bookingController.createBooking(bookingId, flightId, passengerList);

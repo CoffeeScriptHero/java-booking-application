@@ -42,10 +42,6 @@ public class BookingService {
         }
     }
 
-    public Passenger createPassenger(String name, String lastname) {
-        return new Passenger(name,lastname);
-    }
-
     public void createBooking(int id, int flightId, ArrayList<Passenger> passengers) {
         Booking booking = new Booking(id, flightId, passengers);
         bookingDao.saveBooking(booking);
