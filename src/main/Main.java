@@ -20,7 +20,7 @@ public class Main {
   private static final Console console = new Console(flightController, bookingController);
 
   public static void main(String[] args) {
-//    flightController.generateTestData();
+    flightController.generateTestData();
       loadBookings();
       loadFlights();
       console.startConsole();
