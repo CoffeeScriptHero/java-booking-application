@@ -9,42 +9,38 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
+
+  private static final String FILE_NAME_BOOKING = "bookings_db.txt";
+  private static final String FILE_NAME_FLIGHTS = "flights_db.txt";
+
+  private static final FlightDAO flightDAO = FlightCollection.instanceOf();
+  private static final FlightService flightService = new FlightService(flightDAO);
+  private static final FlightController flightController = new FlightController(flightService);
+  private static final BookingController bookingController = new BookingController();
+  private static final Console console = new Console(flightController, bookingController);
+
   public static void main(String[] args) {
-    FlightDAO flightDAO = FlightCollection.instanceOf();
-    FlightService flightService = new FlightService(flightDAO);
-    FlightController flightController = new FlightController(flightService);
-    flightController.generateTestData();
-    flightController.displayAllFlights();
-//    flightController.getFlightById(54).ifPresent(Flight::prettyFormat);
+//    flightController.generateTestData();
+      loadBookings();
+      loadFlights();
+      console.startConsole();
+      saveData();
+  }
 
-    BookingController bc = new BookingController();
-    Booking book1 = new Booking(1, 1973);
-    Booking book2 = new Booking(1, 3625);
-//    bc.saveBooking(book1);
-//    bc.saveBooking(book2);
+  private static void loadBookings() {
+    for (Booking booking : bookingController.loadBookingData(FILE_NAME_BOOKING)) {
+      bookingController.saveBooking(booking);
+    }
+  }
+  private static void loadFlights() {
+    for (Flight flight : flightController.loadFlightData(FILE_NAME_FLIGHTS)) {
+      flightController.saveFlight(flight);
+    }
+  }
 
-    bc.printPrettyFormat(book1, flightController);
-
-    bc.saveBookingData(new ArrayList<Booking>(){{
-      add(book1);
-      add(book2);
-    }}, "bookings_db.txt");
-
-    bc.displayAllBookings(flightController);
-    System.out.println(bc.loadBookingData("bookings_db.txt"));
-
-//    private void loadBookings() {
-//      int counter = 0;
-//      for (Booking b : bc.loadBookingData("bookings_db.txt")) {
-//        counter++;
-//        bc.saveBooking(b);
-//      }
-//      if (counter > 0) System.out.println("Брони были успешно загружены из базы данных");
-//      else System.out.println("В базе данных пусто");
-//    } такой метод можно использовать в классе меню
-
-    flightController.getFlight(54).ifPresent(Flight::prettyFormat);
-    List<Flight> list = flightController.findAvailableFlights("Las Vegas", LocalDate.of(2022, 3, 5), 10);
-    System.out.println(list);
+  private static void saveData() {
+    bookingController.saveBookingData(bookingController.getAllBookings(), FILE_NAME_BOOKING);
+    flightController.saveFlightData(flightController.getAllFlights(), FILE_NAME_FLIGHTS);
+    System.exit(0);
   }
 }
