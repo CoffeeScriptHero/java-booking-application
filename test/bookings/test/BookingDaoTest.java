@@ -14,35 +14,39 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookingDaoTest {
 
     CollectionBookingDao bookingDao = CollectionBookingDao.getInstance();
-    Booking booking1 = new Booking(1, 1973);
-    Booking booking2 = new Booking(2, 8264);
+    Booking booking1;
+    Booking booking2;
 
 
     @BeforeEach
     void setUp() {
         bookingDao.clearCollection();
+        booking1 = new Booking(1, 1973);
+        booking2 = new Booking(2, 8264);
     }
 
     @AfterEach
     void tearDown() {
+        booking1 = null;
+        booking2 = null;
     }
 
     @Test
-    public void GetAllBookingReturnsAnEmptyList() {
+    void GetAllBookingReturnsAnEmptyList() {
         assertEquals(bookingDao.getAllBookings(), new ArrayList<Booking>());
         bookingDao.saveBooking(booking1);
         assertEquals(bookingDao.getAllBookings(), new ArrayList<>(){{add(booking1);}});
     }
 
     @Test
-    public void SaveBookingAddBookingToTheBookingsList() {
+    void SaveBookingAddBookingToTheBookingsList() {
         assertEquals(bookingDao.getAllBookings(), new ArrayList<Booking>());
         bookingDao.saveBooking(booking1);
         assertEquals(bookingDao.getAllBookings(), new ArrayList<Booking>(){{add(booking1);}});
     }
 
     @Test
-    public void SaveBookingDoesNotSaveSameBookingToBookingsList() {
+    void SaveBookingDoesNotSaveSameBookingToBookingsList() {
         bookingDao.saveBooking(booking1);
         assertEquals(bookingDao.getAllBookings().size(), 1);
         assertEquals(bookingDao.getAllBookings(), new ArrayList<Booking>(){{add(booking1);}});
@@ -52,24 +56,24 @@ class BookingDaoTest {
     }
 
     @Test
-    public void GetBookingDoesNotCrashIfThereIsNoBooking() {
+    void GetBookingDoesNotCrashIfThereIsNoBooking() {
         assertEquals(bookingDao.getBooking(3), Optional.empty());
         assertEquals(bookingDao.getBooking(-3), Optional.empty());
     }
 
     @Test
-    public void GetBookingReturnsAnOptionalBookingIfThereIsBooking() {
+    void GetBookingReturnsAnOptionalBookingIfThereIsBooking() {
         bookingDao.saveBooking(booking2);
         assertEquals(bookingDao.getBooking(booking2.getId()), Optional.of(booking2));
     }
 
     @Test
-    public void DeleteBookingDoesNotCrashIfThereIsNoBookingAndReturnsFalse() {
+    void DeleteBookingDoesNotCrashIfThereIsNoBookingAndReturnsFalse() {
         assertFalse(bookingDao.deleteBooking(1000));
     }
 
     @Test
-    public void DeleteBookingDeletesBookingCorrectlyAndReturnsTrue() {
+    void DeleteBookingDeletesBookingCorrectlyAndReturnsTrue() {
         bookingDao.saveBooking(booking2);
         assertEquals(bookingDao.getAllBookings(), new ArrayList<Booking>(){{add(booking2);}});
         assertTrue(bookingDao.deleteBooking(booking2.getId()));
@@ -77,14 +81,14 @@ class BookingDaoTest {
     }
 
     @Test
-    public void SaveBookingDataSavesBookingsToFile() {
+    void SaveBookingDataSavesBookingsToFile() {
         bookingDao.saveBooking(booking1);
         bookingDao.saveBookingData(bookingDao.getAllBookings(), "bookings_db_test.txt");
         assertEquals(bookingDao.loadBookingData("bookings_db_test.txt"), bookingDao.getAllBookings());
     }
 
     @Test
-    public void LoadBookingDataLoadingBookingsFromFile() {
+    void LoadBookingDataLoadingBookingsFromFile() {
         bookingDao.saveBooking(booking1);
         bookingDao.saveBooking(booking2);
         bookingDao.saveBookingData(bookingDao.getAllBookings(), "bookings_db_test.txt");
